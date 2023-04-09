@@ -17,33 +17,40 @@ _model_url = "https://storage.googleapis.com/allennlp-public-models/coref-spanbe
 class MultiProcCRClass():
     __instance = None
     @staticmethod
-    def getInstance():
+    def getInstance(verbose = False):
         """ Static access method. """
         if MultiProcCRClass.__instance == None:
-            MultiProcCRClass()
+            MultiProcCRClass(verbose)
         return MultiProcCRClass.__instance
 
-    def __init__(self):
+    def __init__(self, verbose):
         """ Virtually private constructor. """
         if MultiProcCRClass.__instance != None:
             raise Exception("This class is a singleton!")
         else:
             MultiProcCRClass.__instance = self
-            print("Initializing predictor for CResolution")
+            self._verbose = verbose
+            if self._verbose == True :
+                print("Initializing predictor for CResolution")
             self._predictor = Predictor.from_path(_model_url)
 
     def splitArticle(self, article):
+        if self._verbose == True:
+            print("Splitting article.")
         self.list_paras = article.split('\n')
         return self.list_paras
 
     def resolve_ForkIt(self, article):
         paras = self.splitArticle(article)
-        pool = multiprocessing.Pool(4)
+        if self._verbose == True:
+            print("Fork and then resolve")
+        pool = multiprocessing.Pool()
         result = pool.map(self.resolve, paras)
         return result
 
     def resolve(self, text):
-        print("Resolving with PID : ", os.getpid())
+        if self._verbose == True:
+            print("Resolving with PID : ", os.getpid())
         self._prediction = self._predictor.predict(document=text)
         self._resolved = self._predictor.coref_resolved(text)
         return self._resolved

@@ -13,7 +13,7 @@ article = "Julie has a dog. She loves him. Additionally, she has always been fon
 
 def execute_ProcClass():
     print("Started")
-    c = MultiProcCRClass.getInstance()
+    c = MultiProcCRClass.getInstance(True)
     print(c.resolve_ForkIt(article))
 
 if __name__ == "__main__":
