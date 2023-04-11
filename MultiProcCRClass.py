@@ -48,6 +48,15 @@ class MultiProcCRClass():
         result = pool.map(self.resolve, paras)
         return result
 
+    def resolve_ForkIt_custom(self, paras):
+        if type(paras) is not list:
+            raise Exception("Not a list of strings!")
+        if self._verbose == True:
+            print("Fork and then resolve")
+        pool = multiprocessing.Pool()
+        result = pool.map(self.resolve, paras)
+        return result
+
     def resolve(self, text):
         if self._verbose == True:
             print("Resolving with PID : ", os.getpid())
