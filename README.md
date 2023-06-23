@@ -19,6 +19,12 @@ cr = CResolution.getInstance()
 print(cr.resolve("Julie has a dog. She loves him. Additionally, she has always been fond of animals"))
 ```
 
+```python
+from CResolutionClass import CResolution
+cr = CResolution.getInstance()
+print(cr.resolve_multithread(article))
+```
+
 For using **MultiProcCRClass.py**,
 **Note** : The call to MultiProcCRClass must be within a single execution flow - like main function
 Additionally, for now the splitting of the article is done by just using newline. The number of cores used is the number of available processors in the system.
